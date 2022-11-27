@@ -8,4 +8,4 @@ if runned as script:
 click
 ```
 
-if runned as `.exe` none
+if runned as `.exe` none (the .exe file is located under the `dist` directory)
