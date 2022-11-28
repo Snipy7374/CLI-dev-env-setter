@@ -11,8 +11,6 @@ __author__ = "Snipy7374"
 
 PREFIX_COMMANDS_VERBOSE = colorama.Fore.LIGHTYELLOW_EX + __prog_name__ + colorama.Style.RESET_ALL
 
-# TODO:
-# - add the option --force-install
 
 @click.group()
 @click.help_option("-h", "--help")
@@ -29,18 +27,18 @@ def env(ctx, verbose: bool):
 @click.argument("path", required=False, default="./disnake_dev")
 @click.help_option("-h", "--help")
 @click.option("-b", "--branch", show_default=False, help="the only branch that you want to include")
+@click.option("--force-install/--no-force-install", is_flag=True, default=False, show_default=True, help="force clone a repository in a non-empty dir")
 @click.pass_context
-def setup(ctx, repository: str, path: str, branch: str) -> None:
+def setup(ctx, repository: str, path: str, branch: str, force_install: bool) -> None:
     verbose =  ctx.obj.get("VERBOSE", True)
-    msg = clone_repository(repository=repository, path=path, branch=branch, verbose=verbose)
-    if msg:
-        click.echo(msg, color=True)
+    returned_flag = clone_repository(repository=repository, path=path, branch=branch, verbose=verbose, force_install=force_install)
+    if returned_flag == "stop":
         return
     create_env_and_install_deps(path=path, verbose=verbose)
     
 
 
-def clone_repository(*, repository: str, path: str, branch: Optional[str], verbose: bool) -> Union[str, None]:
+def clone_repository(*, repository: str, path: str, branch: Optional[str], verbose: bool, force_install: bool) -> Union[str, None]:
     clone_path = path + "/disnake"
     clone_single_branch_cmd = ["git", "clone", "--branch", branch, "--single-branch", repository, clone_path]
     clone_cmd = ["git", "clone", repository, clone_path]
@@ -51,9 +49,12 @@ def clone_repository(*, repository: str, path: str, branch: Optional[str], verbo
     }
     if branch:
         verbose_msg["clone_single_branch_cmd"] = colorama.Fore.BLUE + " ".join(clone_single_branch_cmd) + colorama.Style.RESET_ALL
-    if os.path.isdir(path):
-        if any(file for file in os.listdir(path)):
-            return PREFIX_COMMANDS_VERBOSE + colorama.Fore.RED + "ERROR: Can't use a directory with files! Create a new empty directory or use --force-install" + colorama.Style.RESET_ALL
+    
+    if not force_install:
+        if os.path.isdir(path):
+            if any(file for file in os.listdir(path)):
+                click.echo(PREFIX_COMMANDS_VERBOSE + colorama.Fore.RED + "ERROR: Can't use a directory with files! Create a new empty directory or use --force-install" + colorama.Style.RESET_ALL, color=True)
+                return "stop"
 
     if branch:
         if verbose:
