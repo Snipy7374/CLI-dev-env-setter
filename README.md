@@ -19,22 +19,22 @@ You have two different ways to run the command:
 - run the command with Python as script
 - execute the .exe file
 
-# Running as script
+#Running as script
 Go in the directory where you have cloned the repository and execute the following command
 ```
 python -m pip install click
 ```
-to install the required dependencies to run the env setter as script, then run
+to install the required dependencies, then run
 ```
 python env_setter.py
 ```
-this command will display all the subcommands a it's options
+this command will display all the subcommands and it's options
 
 to setup an environment for disnake run
 ```
 python env_setter.py setup
 ```
-check `python env_setter.py setup -h` for more informations about the setup subcommand
+checks `python env_setter.py setup -h` for more informations about the setup subcommand
 
 # Running as .exe
 Go in the directory where you have cloned the repository and execute the following command
