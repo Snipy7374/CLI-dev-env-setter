@@ -16,7 +16,7 @@ PREFIX_COMMANDS_VERBOSE = colorama.Fore.LIGHTYELLOW_EX + __prog_name__ + coloram
 
 @click.group()
 @click.help_option("-h", "--help")
-@click.option("--verbose/--no-verbose", is_flag=True, default=True, show_default=True, help="enable verbosity for the current command")
+@click.option("--verbose/--no-verbose", is_flag=True, default=True, show_default=True, help="enable verbosity")
 @click.version_option(__version__, "-v", "--version", prog_name=__prog_name__, message="%(prog)s " + f"({__author__})" + " version: %(version)s")
 @click.pass_context
 def env(ctx, verbose: bool):
