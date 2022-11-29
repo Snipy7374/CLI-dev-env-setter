@@ -2,6 +2,10 @@
 
 A simple CLI to set up a development environment for disnake
 
+# Demo
+
+https://user-images.githubusercontent.com/100313469/204569124-c3d8e5b3-a047-463a-8f72-38238d5058fd.mp4
+
 # Requirements
 if runned as script:
 ```
